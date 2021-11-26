@@ -66,3 +66,15 @@ func gaussianElimination(a [][]float64, k, m int) [][]float64 {
 	return a
 }
 
+// backSubstitution returns system results by performing algebraic operations on the augmented matrix with the row-eschelon form.
+func backSubstitution(a [][]float64, m int) []float64 {
+	x := make([]float64, m)
+	for i := m - 1; i >= 0; i-- {
+		x[i] = a[i][m]
+		for j := i + 1; j < m; j++ {
+			x[i] -= a[i][j] * x[j]
+		}
+		x[i] /= a[i][i]
+	}
+	return x
+}

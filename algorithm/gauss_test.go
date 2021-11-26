@@ -83,3 +83,18 @@ func TestGaussianElimination(t *testing.T) {
 		t.Fatalf("\nWanted %v, \n   got %v", got, want)
 	}
 }
+
+func TestBackSubstitution(t *testing.T) {
+	a := [][]float64{
+		{1, 0, 1, 0},
+		{0, 4, -4, -4},
+		{0, 0, -4, -4},
+	}
+
+	want := []float64{-1, 0, 1}
+	got := backSubstitution(a, 3)
+
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("\nWanted %v, \n   got %v", got, want)
+	}
+}
