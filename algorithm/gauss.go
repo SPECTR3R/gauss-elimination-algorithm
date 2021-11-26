@@ -5,6 +5,7 @@ import (
 	"math"
 )
 
+// augmentedMatrix creates an augmented matrix from the given matrix and vector.
 func augmentedMatrix(a0 [][]float64, b0 []float64) [][]float64 {
 	// make augmented matrix
 	m := len(b0)
@@ -19,13 +20,13 @@ func augmentedMatrix(a0 [][]float64, b0 []float64) [][]float64 {
 	return a
 }
 
+// computeScaleFactor computes the scale factor S_i = |a_ki|/max(row) in each row of the given matrix, and returns the index of the row with the greatest scale factor.
 func computeScaleFactor(a [][]float64, k, m int) (int, error) {
 	max := -1.0
 	iMax := 0
 
 	for i := k; i < m; i++ {
 		row := a[i]
-		// compute scale factor s = max abs in row
 		s := -1.
 		for j := k; j < m; j++ {
 			x := math.Abs(row[j])
@@ -33,7 +34,6 @@ func computeScaleFactor(a [][]float64, k, m int) (int, error) {
 				s = x
 			}
 		}
-		// scale the abs used to pick the pivot.
 		if abs := math.Abs(row[k]) / s; abs > max {
 			iMax = i
 			max = abs
