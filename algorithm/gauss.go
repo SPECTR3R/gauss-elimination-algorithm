@@ -28,12 +28,14 @@ func computeScaleFactor(a [][]float64, k, m int) (int, error) {
 	for i := k; i < m; i++ {
 		row := a[i]
 		s := -1.
+
 		for j := k; j < m; j++ {
 			x := math.Abs(row[j])
 			if x > s {
 				s = x
 			}
 		}
+
 		if abs := math.Abs(row[k]) / s; abs > max {
 			iMax = i
 			max = abs
@@ -46,3 +48,21 @@ func computeScaleFactor(a [][]float64, k, m int) (int, error) {
 
 	return iMax, nil
 }
+
+// swapRows swaps rows of given matrix using.
+func swapRows(a [][]float64, idx1, idx2 int) [][]float64 {
+	a[idx1], a[idx2] = a[idx2], a[idx1]
+	return a
+}
+
+// gaussianElimination operates the elements of pivot k row with all the rows below it to create the zeroes of the row-eschelon form.
+func gaussianElimination(a [][]float64, k, m int) [][]float64 {
+	for i := k + 1; i < m; i++ {
+		for j := k + 1; j <= m; j++ {
+			a[i][j] -= a[k][j] * (a[i][k] / a[k][k])
+		}
+		a[i][k] = 0
+	}
+	return a
+}
+

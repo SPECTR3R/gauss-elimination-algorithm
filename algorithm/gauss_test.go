@@ -29,7 +29,7 @@ func TestAugmentedMatrix(t *testing.T) {
 func TestComputeScaleFactor(t *testing.T) {
 	a := [][]float64{
 		{2.11, -4.21, 0.921, 2.01},
-		{4.01, 10.2, 1.12, -3.09},
+		{4.01, 10.2, -1.12, -3.09},
 		{1.09, .987, .832, 4.21},
 	}
 
@@ -42,5 +42,44 @@ func TestComputeScaleFactor(t *testing.T) {
 
 	if got != want {
 		t.Fatalf("\nWanted %v, \ngot %v", want, got)
+	}
+}
+
+func TestSwapRows(t *testing.T) {
+	a := [][]float64{
+		{1, 2, 3},
+		{2, 3, 4},
+		{3, 4, 5},
+	}
+
+	want := [][]float64{
+		{3, 4, 5},
+		{2, 3, 4},
+		{1, 2, 3},
+	}
+
+	a = swapRows(a, 0, 2)
+
+	if !reflect.DeepEqual(a, want) {
+		t.Fatalf("\nWanted %v, \ngot %v", want, a)
+	}
+}
+
+func TestGaussianElimination(t *testing.T) {
+	a := [][]float64{
+		{1, 1, 1, 2},
+		{1, 2, 3, 5},
+		{2, 3, 4, 11},
+	}
+
+	want := [][]float64{
+		{1, 1, 1, 2},
+		{0, 1, 2, 3},
+		{0, 1, 2, 7},
+	}
+	got := gaussianElimination(a, 0, 3)
+
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("\nWanted %v, \n   got %v", got, want)
 	}
 }
