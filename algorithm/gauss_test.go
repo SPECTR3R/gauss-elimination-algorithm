@@ -1,100 +1,56 @@
 package gauss
 
 import (
-	"reflect"
+	"fmt"
+	"log"
+	"math"
 	"testing"
 )
 
-func TestAugmentedMatrix(t *testing.T) {
-	a0 := [][]float64{
-		{1, 2, 3},
-		{2, 3, 4},
-		{3, 4, 5},
-	}
-	b0 := []float64{6, 7, 8}
-
-	want := [][]float64{
-		{1, 2, 3, 6},
-		{2, 3, 4, 7},
-		{3, 4, 5, 8},
-	}
-
-	got := augmentedMatrix(a0, b0)
-
-	if !reflect.DeepEqual(got, want) {
-		t.Fatalf("\nWanted %v, \ngot %v", want, got)
-	}
+type testCase struct {
+	Name string
+	a    [][]float64
+	b    []float64
+	x    []float64
 }
 
-func TestComputeScaleFactor(t *testing.T) {
-	a := [][]float64{
-		{2.11, -4.21, 0.921, 2.01},
-		{4.01, 10.2, -1.12, -3.09},
-		{1.09, .987, .832, 4.21},
+// result from above test case turns out to be correct to this tolerance.
+const ep = 1e-14
+
+func TestGaussPartial(t *testing.T) {
+	cases := []testCase{
+
+		{
+			Name: "6x6",
+			a: [][]float64{
+				{1.00, 0.00, 0.00, 0.00, 0.00, 0.00},
+				{1.00, 0.63, 0.39, 0.25, 0.16, 0.10},
+				{1.00, 1.26, 1.58, 1.98, 2.49, 3.13},
+				{1.00, 1.88, 3.55, 6.70, 12.62, 23.80},
+				{1.00, 2.51, 6.32, 15.88, 39.90, 100.28},
+				{1.00, 3.14, 9.87, 31.01, 97.41, 306.02},
+			},
+			b: []float64{-0.01, 0.61, 0.91, 0.99, 0.60, 0.02},
+			x: []float64{
+				-0.01, 1.602790394502114, -1.6132030599055613,
+				1.2454941213714368, -0.4909897195846576, 0.065760696175232,
+			},
+		},
 	}
 
-	want := 2
-
-	got, err := computeScaleFactor(a, 0, 3)
-	if err != nil {
-		t.Fatalf("did not expect error, but got %v", err)
-	}
-
-	if got != want {
-		t.Fatalf("\nWanted %v, \ngot %v", want, got)
-	}
-}
-
-func TestSwapRows(t *testing.T) {
-	a := [][]float64{
-		{1, 2, 3},
-		{2, 3, 4},
-		{3, 4, 5},
-	}
-
-	want := [][]float64{
-		{3, 4, 5},
-		{2, 3, 4},
-		{1, 2, 3},
-	}
-
-	a = swapRows(a, 0, 2)
-
-	if !reflect.DeepEqual(a, want) {
-		t.Fatalf("\nWanted %v, \ngot %v", want, a)
-	}
-}
-
-func TestGaussianElimination(t *testing.T) {
-	a := [][]float64{
-		{1, 1, 1, 2},
-		{1, 2, 3, 5},
-		{2, 3, 4, 11},
-	}
-
-	want := [][]float64{
-		{1, 1, 1, 2},
-		{0, 1, 2, 3},
-		{0, 1, 2, 7},
-	}
-	got := gaussianElimination(a, 0, 3)
-
-	if !reflect.DeepEqual(got, want) {
-		t.Fatalf("\nWanted %v, \n   got %v", got, want)
-	}
-}
-
-func TestBackSubstitution(t *testing.T) {
-	a := [][]float64{
-		{1, 0, 1, 0},
-		{0, 4, -4, -4},
-		{0, 0, -4, -4},
-	}
-
-	want := []float64{-1, 0, 1}
-	got := backSubstitution(a, 3)
-
-	if !reflect.DeepEqual(got, want) {
-		t.Fatalf("\nWanted %v, \n   got %v", got, want)
+	for _, tc := range cases {
+		t.Run(tc.Name, func(t *testing.T) {
+			x, err := SolveSystem(tc.a, tc.b)
+			if err != nil {
+				log.Fatal(err)
+			}
+			fmt.Println(x)
+			for i, xi := range x {
+				if math.Abs(tc.x[i]-xi) > ep {
+					log.Println("out of tolerance")
+					t.Errorf("for %v, want %v", x[i], tc.x)
+				}
+			}
+		})
 	}
 }
