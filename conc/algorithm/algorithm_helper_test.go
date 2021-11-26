@@ -1,4 +1,4 @@
-package gauss
+package algorithm
 
 import (
 	"reflect"

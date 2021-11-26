@@ -1,4 +1,4 @@
-package gauss
+package algorithm
 
 // Solve solves the system of linear equations using the gauss Elimination algorithm with scaled partial pivoting
 func SolveSystem(a0 [][]float64, b0 []float64) ([]float64, error) {

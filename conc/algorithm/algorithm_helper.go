@@ -1,4 +1,4 @@
-package gauss
+package algorithm
 
 import (
 	"errors"
@@ -42,7 +42,7 @@ func computeScaleFactor(a [][]float64, k, m int) (int, error) {
 		}
 	}
 
-	// return error if pivot == 0
+	// return error if pivot value is == 0
 	if a[iMax][k] == 0 {
 		return 0, errors.New("matrix is unsolvable")
 	}
