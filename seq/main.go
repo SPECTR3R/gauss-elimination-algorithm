@@ -1,12 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"runtime/trace"
 
-	"github.com/SPECTR3R/gauss/algorithm"
+	"github.com/SPECTR3R/gauss/seq/algorithm"
 )
 
 type linearSystem struct {
@@ -30,9 +29,9 @@ func main() {
 	trace.Start(os.Stdout)
 	defer trace.Stop()
 
-	x, err := algorithm.SolveSystem(ls.a, ls.b)
+	_, err := algorithm.SolveSystem(ls.a, ls.b)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(x)
+	// fmt.Println(x)
 }

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/SPECTR3R/gauss/algorithm"
+	"github.com/SPECTR3R/gauss/conc/algorithm"
 )
 
 type linearSystem struct {
