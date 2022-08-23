@@ -5,7 +5,7 @@ import (
 	"os"
 	"runtime/trace"
 
-	"github.com/SPECTR3R/gauss-elimination-algorithm/algorithm"
+	"github.com/SPECTR3R/gauss-elimination-algorithm/seq/algorithm"
 )
 
 type linearSystem struct {
