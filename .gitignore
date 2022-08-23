@@ -1,3 +1,4 @@
 # All .trace files in the current directory.
 *.trace
 */*.trace
+gauss
