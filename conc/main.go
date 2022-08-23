@@ -1,8 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"log"
+	"os"
+	"runtime/trace"
 
 	"github.com/SPECTR3R/gauss/conc/algorithm"
 )
@@ -29,10 +30,11 @@ func main() {
 	// if err != nil {
 	// 	log.Fatal(err)
 	// }
-
-	x, err := algorithm.SolveSystem(ls.a, ls.b)
+	trace.Start(os.Stdout)
+	defer trace.Stop()
+	_, err := algorithm.SolveSystem(ls.a, ls.b)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(x)
+	// fmt.Println(x)
 }

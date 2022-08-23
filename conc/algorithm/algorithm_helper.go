@@ -62,12 +62,13 @@ func gaussianElimination(a [][]float64, k, m int) [][]float64 {
 	var w sync.WaitGroup
 	for i := k + 1; i < m; i++ {
 		w.Add(1)
-		go func(i int) {
+		i := i
+		go func() {
 			for j := k + 1; j <= m; j++ {
 				a[i][j] -= a[k][j] * (a[i][k] / a[k][k])
 			}
 			w.Done()
-		}(i)
+		}()
 		a[i][k] = 0
 	}
 	w.Wait()
